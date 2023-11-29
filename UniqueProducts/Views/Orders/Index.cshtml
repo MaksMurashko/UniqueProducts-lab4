@@ -1,0 +1,71 @@
+﻿@model IEnumerable<UniqueProducts.Models.Order>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Заказы</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Номер заказа</th>
+            <th>Дата заказа</th>
+            <th>Компания</th>
+            <th>Изделие</th>
+            <th>Количество изделий</th>
+            <th>Полная стоимость</th>
+            <th>Ответственный сотрудник</th>
+            <th>Завершен</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderId)
+            </td>
+            <td>
+                    @{
+                        string formattedDate = item.OrderDate.HasValue ? item.OrderDate.Value.ToShortDateString() : string.Empty;
+                    }
+                    @Html.DisplayFor(modelItem => formattedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Client.Company)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.EmployeeSurname)
+            </td>
+            <td>
+                    @if (item.IsCompleted.HasValue && item.IsCompleted.Value)
+                    {
+                        <text>Да</text>
+                    }
+                    else
+                    {
+                        <text>Нет</text>
+                    }
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
